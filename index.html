@@ -1,0 +1,66 @@
+<html ng-app="configApp">
+  <head>
+    <meta charset="utf-8">
+    <title>notmuch sinatra</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.js"></script>
+	
+	<script>
+      var configApp = angular.module('configApp', ['xeditable']);
+      configApp.controller('ConfigCtrl', function ($scope, $http){
+        $http.get('http://localhost:4567/api/settings').success(function(data) {
+          $scope.repoconfig = data.repositories;
+          $scope.scrapeignore = data.scraper.ignore;
+          $scope.scrapequalify = data.scraper.qualifier_extension;
+          $scope.cacheconfig = data.cache;
+        });
+      });
+
+  </script>
+  </head>
+  <body ng-controller="ConfigCtrl">
+  	<ul class="nav nav-tabs">
+    <li class="active"><a showtab="" href="#standardNav">config</a></li>
+    <li><a showtab="" href="#quickadd">treeview</a></li>
+	</ul>
+ 
+	<div class="table-responsive"> 
+    <table class="table">
+      <tr><td><h4>media repositories</h4></td></tr>
+      <tr>
+        <th>description</th>
+		<th>path</th>
+      </tr>
+      <tr ng-repeat="(key, data) in repoconfig">
+        <td>{{key}}</td>
+		<td>{{data}}</td>
+		<td><button type="button" class="btn btn-default btn-xs">del</button></td>
+      </tr>
+      <tr><td><button type="button" class="btn btn-default btn-xs" ng-click="addRepo()">add</button></td></tr>
+      <tr><td><h4>patterns to skip while scraping</h4></td></tr>
+      <tr>
+        <th>description</th>
+		<th>pattern</th>
+      </tr>
+      <tr ng-repeat="(key, data) in scrapeignore">
+        <td>{{key}}</td>
+		<td>{{data}}</td>
+		<td><button type="button" class="btn btn-default btn-xs">del</button></td>
+      </tr>
+      <tr><td><button type="button" class="btn btn-default btn-xs">add</button></td></tr>
+      <tr><td><h4>extensions to scrape</h4></td></tr>
+      <tr>
+        <th>description</th>
+		<th>extension</th>
+      </tr>
+      <tr ng-repeat="(key, data) in scrapequalify">
+        <td>{{key}}</td>
+		<td>{{data}}</td>
+		<td><button type="button" class="btn btn-default btn-xs">del</button></td>
+      </tr>
+      <tr><td><button type="button" class="btn btn-default btn-xs">add</button></td></tr>
+    </table>
+	</div>
+  </body>
+</html>
