@@ -3,11 +3,10 @@
     <meta charset="utf-8">
     <title>notmuch sinatra</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.js"></script>
-	
+	<script src="/js/angular.js"></script>
+  <script src="/js/angular-resource.js"></script>
 	<script>
-      var configApp = angular.module('configApp', ['xeditable']);
+      var configApp = angular.module('configApp', []);
       configApp.controller('ConfigCtrl', function ($scope, $http){
         $http.get('http://localhost:4567/api/settings').success(function(data) {
           $scope.repoconfig = data.repositories;
