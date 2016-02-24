@@ -12,7 +12,7 @@ end
 
 get '/notmuch/search' do
 	content_type :json
-	p system('/home/till/notmuch search --format=json test')
+	system('/home/till/notmuch search --format=json test')
 end
 
 get '/notmuch/show' do
