@@ -5,7 +5,6 @@
 #
 
 require 'sinatra'
-require 'sinatra/assetpack'
 
 get '/' do
 	File.read "#{Dir.pwd}/index.html"

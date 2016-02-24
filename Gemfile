@@ -1,4 +1,4 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
-gem 'sinatra-assetpack'
+gem 'puma'
