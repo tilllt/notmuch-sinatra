@@ -11,7 +11,8 @@ get '/' do
 end
 
 get '/notmuch/search' do
-	search = params[params.keys].join(' AND ')
+	search = params[params.keys]
+	search = search.join(' AND ')
  	p search
 	#content_type :json
 	#system('/home/till/notmuch search --format=json'+ params).inspect
