@@ -11,7 +11,7 @@ get '/' do
 end
 
 get '/notmuch/search' do
-	p params[hash.keys.to_sym]
+	p params[params.keys.to_sym]
 	#content_type :json
 	#system('/home/till/notmuch search --format=json'+ params).inspect
 end
