@@ -17,17 +17,17 @@ end
 
 get '/notmuch/show' do
 	content_type :json
-	system('/home/till/notmuch show --format=\"json\"'+ params)
+	IO.popen('notmuch --config=/home/till/.notmuch-config show --format=json test')
 end
 
 get '/notmuch/address' do
 	content_type :json
-	system('/home/till/notmuch address --format=\"json\"'+ params)
+	IO.popen('notmuch --config=/home/till/.notmuch-config addresss --format=json test')
 end
 
 get '/notmuch/count' do
 	content_type :json
-	system('/home/till/notmuch count --format=\"json\"'+ params)
+	IO.popen('notmuch --config=/home/till/.notmuch-config count --format=json test')
 end
 
 not_found do
