@@ -10,10 +10,6 @@ get '/' do
 	File.read "#{Dir.pwd}/index.html"
 end
 
-assets do
-	serve '/bower_components', from: 'bower_components'
-end
-
 get '/notmuch/search' do
 	content_type :json
 	system('/home/till/notmuch search --format=\"json\"'+ params)
