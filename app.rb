@@ -12,22 +12,22 @@ end
 
 get '/notmuch/search' do
 	content_type :json
-	IO.popen('notmuch --config=/home/till/.notmuch-config search --format=json test')
+	IO.popen('notmuch --config=/home/till/.notmuch-config search --format=json kegeln')
 end
 
 get '/notmuch/show' do
 	content_type :json
-	IO.popen('notmuch --config=/home/till/.notmuch-config show --format=json test')
+	IO.popen('notmuch --config=/home/till/.notmuch-config show --format=json kegeln')
 end
 
 get '/notmuch/address' do
 	content_type :json
-	IO.popen('notmuch --config=/home/till/.notmuch-config addresss --format=json test')
+	IO.popen('notmuch --config=/home/till/.notmuch-config addresss --format=json kegeln')
 end
 
 get '/notmuch/count' do
 	content_type :json
-	IO.popen('notmuch --config=/home/till/.notmuch-config count --format=json test')
+	IO.popen('notmuch --config=/home/till/.notmuch-config count --format=json kegeln')
 end
 
 not_found do
