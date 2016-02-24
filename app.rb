@@ -11,7 +11,10 @@ get '/' do
 end
 
 get '/notmuch/search' do
-	p params[params.keys.to_sym]
+	search = params[params.keys] each do |s|
+			search = search + |s| + 'AND'
+		   end
+ 	p search
 	#content_type :json
 	#system('/home/till/notmuch search --format=json'+ params).inspect
 end
