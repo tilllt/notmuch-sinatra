@@ -12,8 +12,7 @@ end
 
 get '/notmuch/search' do
 	content_type :json
-	search = system('notmuch --config=/home/till/.notmuch-config search --format=json test')
-	p search
+	system('notmuch --config=/home/till/.notmuch-config search --format=json test')
 end
 
 get '/notmuch/show' do
