@@ -1,65 +1,90 @@
-<html ng-app="configApp">
+<html ng-app="notmuchApp">
   <head>
     <meta charset="utf-8">
     <title>notmuch sinatra</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<script src="/js/angular.js"></script>
-  <script src="/js/angular-resource.js"></script>
-	<script>
-      var configApp = angular.module('configApp', []);
-      configApp.controller('ConfigCtrl', function ($scope, $http){
-        $http.get('http://localhost:4567/api/settings').success(function(data) {
-          $scope.repoconfig = data.repositories;
-          $scope.scrapeignore = data.scraper.ignore;
-          $scope.scrapequalify = data.scraper.qualifier_extension;
-          $scope.cacheconfig = data.cache;
-        });
-      });
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<script src="js/angular.js"></script>
+  <script src="js/angular-resource.js"></script>
+  <script src="js/ui-bootstrap-tpls-1.1.2.js"></script>
 
-  </script>
+<script>
+
+  var notmuchApp = angular.module('notmuchApp', ['ui.bootstrap','ngResource']);
+  notmuchApp.controller('handleSearch', ['$scope', 'getSearch',
+    function ($scope, getSearch) {
+        $scope.searchresults = getSearch.query();
+    }]);
+
+  notmuchApp.factory('getSearch', function ($resource) {
+    return $resource('/notmuch/search', {}, {
+        query: { method: 'GET', params: {query:'hund'}, isArray: true },
+    })
+});
+
+
+//    return $resource('/notmuch/search?', {}, {
+//        query: { method: 'GET', params: {query: '@blub'}, isArray: true },
+//    })
+//});
+</script>
   </head>
-  <body ng-controller="ConfigCtrl">
-  	<ul class="nav nav-tabs">
-    <li class="active"><a showtab="" href="#standardNav">config</a></li>
-    <li><a showtab="" href="#quickadd">treeview</a></li>
-	</ul>
- 
-	<div class="table-responsive"> 
-    <table class="table">
-      <tr><td><h4>media repositories</h4></td></tr>
+ <body ng-controller="handleSearch">
+  <div class="container">
+          <form>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" placeholder="Search EMail" ng-model="searchterm">
+                <input type="submit" class="form-control" value="Search" ng-submit="searchresults();">
+              </div>  
+            </div>
+          </form>
+
+          <form>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                  <input type="text" class="form-control" placeholder="Filter Results" ng-model="filterResults">
+                </div>      
+              </div>
+          </form>
+
+       
+      <table class="table table-striped col-md-8">
+      <thead>
       <tr>
-        <th>description</th>
-		<th>path</th>
+        <td>
+          <a href="#" ng-click="sortType = 'searchresult.timestamp'; sortReverse = !sortReverse">
+            Time
+            <span ng-show="sortType == 'searchresult.timestamp' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'searchresult.timestamp' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+        <td>
+          <a href="#" ng-click="sortType = 'searchresult.authors'; sortReverse = !sortReverse">
+            Authors
+            <span ng-show="sortType == 'searchresult.authors' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'searchresult.authors' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+        <td>
+          <a href="#" ng-click="sortType = 'searchresult.subject'; sortReverse = !sortReverse">
+            Subject
+            <span ng-show="sortType == 'searchresult.subject' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'searchresult.subject' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
       </tr>
-      <tr ng-repeat="(key, data) in repoconfig">
-        <td>{{key}}</td>
-		<td>{{data}}</td>
-		<td><button type="button" class="btn btn-default btn-xs">del</button></td>
+    </thead>
+    <tbody>
+     <tr ng-repeat="searchresult in searchresults | orderBy:sortType:sortReverse | filter:filterResults">
+        <td class="col-md-1">{{searchresult.timestamp * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td class="col-md-2">{{searchresult.authors}}</td>
+        <td class="col-md-2">{{searchresult.subject}}</td>
       </tr>
-      <tr><td><button type="button" class="btn btn-default btn-xs" ng-click="addRepo()">add</button></td></tr>
-      <tr><td><h4>patterns to skip while scraping</h4></td></tr>
-      <tr>
-        <th>description</th>
-		<th>pattern</th>
-      </tr>
-      <tr ng-repeat="(key, data) in scrapeignore">
-        <td>{{key}}</td>
-		<td>{{data}}</td>
-		<td><button type="button" class="btn btn-default btn-xs">del</button></td>
-      </tr>
-      <tr><td><button type="button" class="btn btn-default btn-xs">add</button></td></tr>
-      <tr><td><h4>extensions to scrape</h4></td></tr>
-      <tr>
-        <th>description</th>
-		<th>extension</th>
-      </tr>
-      <tr ng-repeat="(key, data) in scrapequalify">
-        <td>{{key}}</td>
-		<td>{{data}}</td>
-		<td><button type="button" class="btn btn-default btn-xs">del</button></td>
-      </tr>
-      <tr><td><button type="button" class="btn btn-default btn-xs">add</button></td></tr>
+    </tbody>
     </table>
-	</div>
-  </body>
+</div>
+</body>
 </html>
